@@ -110,7 +110,7 @@ namespace TabloidCLI.UserInterfaceManagers
             journal.Content = Console.ReadLine();
 
             Console.Write("CreateDateTime: ");
-            journal.CreateDateTime = new DateTime();
+            journal.CreateDateTime = new DateTime(2021, 12, 8);
 
             _journalRepository.Insert(journal);
         }
