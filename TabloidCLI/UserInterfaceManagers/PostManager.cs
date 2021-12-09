@@ -71,13 +71,43 @@ namespace TabloidCLI.UserInterfaceManagers
 
         private void List()
         {
-
+            List<Post> posts = _postRepository.GetAll();
+            foreach (Post post in posts)
+            {
+                Console.WriteLine(post.Title);
+            }
         }
 
-        //private Post Choose(string prompt = null)
-        //{
-            
-        //}
+        private Post Choose(string prompt = null)
+        {
+            if (prompt == null)
+            {
+                prompt = "Please choose an Post:";
+            }
+
+            Console.WriteLine(prompt);
+
+            List<Post> posts = _postRepository.GetAll();
+
+            for (int i = 0; i < posts.Count; i++)
+            {
+                Post post = posts[i];
+                Console.WriteLine($" {i + 1}) {post.Title}");
+            }
+            Console.Write("> ");
+
+            string input = Console.ReadLine();
+            try
+            {
+                int choice = int.Parse(input);
+                return posts[choice - 1];
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Invalid Selection");
+                return null;
+            }
+        }
 
         private void Add()
         {
@@ -145,9 +175,11 @@ namespace TabloidCLI.UserInterfaceManagers
 
         private void Remove()
         {
-
+            Post postToDelete = Choose("Which post would you like to remove?");
+            if (postToDelete != null)
+            {
+                _postRepository.Delete(postToDelete.Id);
+            }
         }
-
-
     }
 }
