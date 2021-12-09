@@ -137,6 +137,8 @@ namespace TabloidCLI.UserInterfaceManagers
                 journalToEdit.Content = content;
             }
 
+            journalToEdit.CreateDateTime = DateTime.Now;
+
             _journalRepository.Update(journalToEdit);
         }
 
