@@ -61,7 +61,13 @@ namespace TabloidCLI.UserInterfaceManagers
 
         private void Add()
         {
-            throw new NotImplementedException();
+            Console.WriteLine("Create a new tag: ");
+            Tag tag = new Tag();
+
+            Console.WriteLine("Tag name: ");
+            tag.Name = Console.ReadLine();
+
+            _tagRepository.Insert(tag);
         }
 
         private void Edit()
