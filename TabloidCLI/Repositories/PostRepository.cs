@@ -112,7 +112,7 @@ namespace TabloidCLI.Repositories
                                                p.AuthorId,
                                                a.FirstName,
                                                a.LastName,
-                                               a.Bio,
+                                               a.Bio
                                           FROM Post p 
                                                LEFT JOIN Author a on p.AuthorId = a.Id
                                          WHERE p.AuthorId = @authorId";

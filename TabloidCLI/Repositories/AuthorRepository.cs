@@ -128,7 +128,6 @@ namespace TabloidCLI
                                                LastName = @lastName,
                                                bio = @bio
                                          WHERE id = @id";
-
                     cmd.Parameters.AddWithValue("@firstName", author.FirstName);
                     cmd.Parameters.AddWithValue("@lastName", author.LastName);
                     cmd.Parameters.AddWithValue("@bio", author.Bio);
