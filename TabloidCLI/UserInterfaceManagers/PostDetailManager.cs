@@ -43,10 +43,10 @@ namespace TabloidCLI.UserInterfaceManagers
                     ViewPosts();
                     return this;
                 case "3":
-                   // AddTag();
+                    //AddTag();
                     return this;
                 case "4":
-                   // RemoveTag();
+                    //RemoveTag();
                     return this;
                 case "0":
                     return _parentUI;
@@ -62,10 +62,10 @@ namespace TabloidCLI.UserInterfaceManagers
             Console.WriteLine($"Title: {post.Title}");
             Console.WriteLine($"URL: {post.Url}");
             Console.WriteLine("Tags:");
-            //foreach (Tag tag in post.Tags)
-            //{
-            //    Console.WriteLine(" " + tag);
-            //}
+            foreach (Tag tag in post.Tags)
+            {
+                Console.WriteLine(" " + tag);
+            }
             Console.WriteLine();
         }
 
@@ -89,7 +89,7 @@ namespace TabloidCLI.UserInterfaceManagers
         //    for (int i = 0; i < tags.Count; i++)
         //    {
         //        Tag tag = tags[i];
-        //        Console.WriteLine($" {i + 1}) {tag.Title}");
+        //        Console.WriteLine($" {i + 1}) {tag.Name}");
         //    }
         //    Console.Write("> ");
 
@@ -108,7 +108,7 @@ namespace TabloidCLI.UserInterfaceManagers
 
         //private void RemoveTag()
         //{
-        //    Author post = _postRepository.Get(_postId);
+        //    Post post = _postRepository.Get(_postId);
 
         //    Console.WriteLine($"Which tag would you like to remove from {post.Title}?");
         //    List<Tag> tags = post.Tags;
@@ -116,7 +116,7 @@ namespace TabloidCLI.UserInterfaceManagers
         //    for (int i = 0; i < tags.Count; i++)
         //    {
         //        Tag tag = tags[i];
-        //        Console.WriteLine($" {i + 1}) {tag.Title}");
+        //        Console.WriteLine($" {i + 1}) {tag.Name}");
         //    }
         //    Console.Write("> ");
 
