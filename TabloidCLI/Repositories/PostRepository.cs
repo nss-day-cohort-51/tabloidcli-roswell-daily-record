@@ -34,15 +34,11 @@ namespace TabloidCLI.Repositories
                                                p.URL AS PostUrl,
                                                p.PublishDateTime,
                                                p.AuthorId,
-                                               p.BlogId,
                                                a.FirstName,
                                                a.LastName,
                                                a.Bio,
-                                               b.Title AS BlogTitle,
-                                               b.URL AS BlogUrl
                                           FROM Post p 
                                                LEFT JOIN Author a on p.AuthorId = a.Id
-                                               LEFT JOIN Blog b on p.BlogId = b.Id 
                                          WHERE p.AuthorId = @authorId";
                     cmd.Parameters.AddWithValue("@authorId", authorId);
                     SqlDataReader reader = cmd.ExecuteReader();
@@ -62,12 +58,6 @@ namespace TabloidCLI.Repositories
                                 FirstName = reader.GetString(reader.GetOrdinal("FirstName")),
                                 LastName = reader.GetString(reader.GetOrdinal("LastName")),
                                 Bio = reader.GetString(reader.GetOrdinal("Bio")),
-                            },
-                            Blog = new Blog()
-                            {
-                                Id = reader.GetInt32(reader.GetOrdinal("BlogId")),
-                                Title = reader.GetString(reader.GetOrdinal("BlogTitle")),
-                                Url = reader.GetString(reader.GetOrdinal("BlogUrl")),
                             }
                         };
                         posts.Add(post);
@@ -87,20 +77,22 @@ namespace TabloidCLI.Repositories
                 conn.Open();
                 using (SqlCommand cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = @"INSERT INTO Post (Title, Url, PublishDateTime) 
+                    cmd.CommandText = @"INSERT INTO Post (Title, Url, PublishDateTime, AuthorId, BlogId) 
                                         OUTPUT INSERTED.Id 
-                                        VALUES (@title, @url, @publishDateTime)";
-                    cmd.Parameters.AddWithValue(@"Title", post.Title);
-                    cmd.Parameters.AddWithValue(@"Url", post.Url);
-                    cmd.Parameters.AddWithValue(@"PublishDateTime", post.PublishDateTime);
-                    
+                                        VALUES (@title, @url, @publishDateTime, @authorId, @blogId)";
+                    cmd.Parameters.AddWithValue("@title", post.Title);
+                    cmd.Parameters.AddWithValue("@url", post.Url);
+                    cmd.Parameters.AddWithValue("@publishDateTime", post.PublishDateTime);
+                    cmd.Parameters.AddWithValue("@authorId", post.Author.Id);
+                    cmd.Parameters.AddWithValue("@blogId", post.Blog.Id);
+
                     int id = (int)cmd.ExecuteScalar();
-                    
+
                     post.Id = id;
 
                 }
             }
-            throw new NotImplementedException();
+     
         }
 
         public void Update(Post post)
