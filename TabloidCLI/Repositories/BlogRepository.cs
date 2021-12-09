@@ -41,7 +41,53 @@ namespace TabloidCLI
 
         public Blog Get(int id)
         {
-            throw new NotImplementedException();
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"SELECT b.Id,
+                                               b.Title,
+                                               b.Url,
+                                               bt.Id AS TagId,
+                                               t.Name
+                                        FROM Blog b
+                                            LEFT JOIN BlogTag bt on bt.BlogId = b.Id
+                                            LEFT JOIN Tag t on t.id = bt.TagId
+                                        WHERE b.Id = @id";
+                    cmd.Parameters.AddWithValue("@id", id);
+
+                    Blog blog = null;
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        if (blog == null)
+                        {
+                            blog = new Blog()
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                                Title = reader.GetString(reader.GetOrdinal("Title")),
+                                Url = reader.GetString(reader.GetOrdinal("Url"))
+                            };
+                        }
+
+                        if (!reader.IsDBNull(reader.GetOrdinal("TagId")))
+                        {
+                            blog.Tags.Add(new Tag()
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("TagId")),
+                                Name = reader.GetString(reader.GetOrdinal("Name"))
+                            });
+                        }
+                    }
+
+                    reader.Close();
+
+                    return blog;
+
+                }
+            }
         }
         public void Delete(int id)
         {
@@ -66,7 +112,7 @@ namespace TabloidCLI
                 {
                     cmd.CommandText = @"UPDATE Blog
                                         SET Title = @title,
-                                            URL = @url,
+                                            URL = @Url
                                         WHERE Id = @id";
 
                     cmd.Parameters.AddWithValue("@title", blog.Title);
