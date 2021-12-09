@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using Microsoft.Data.SqlClient;
 using TabloidCLI.Models;
+using System.Text;
+using TabloidCLI.Repositories;
+using TabloidCLI.UserInterfaceManagers;
 
 namespace TabloidCLI.Repositories
 {
@@ -79,6 +82,24 @@ namespace TabloidCLI.Repositories
 
         public void Insert(Post post)
         {
+            using (SqlConnection conn = Connection)
+            {
+                conn.Open();
+                using (SqlCommand cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"INSERT INTO Post (Title, Url, PublishDateTime) 
+                                        OUTPUT INSERTED.Id 
+                                        VALUES (@title, @url, @publishDateTime)";
+                    cmd.Parameters.AddWithValue(@"Title", post.Title);
+                    cmd.Parameters.AddWithValue(@"Url", post.Url);
+                    cmd.Parameters.AddWithValue(@"PublishDateTime", post.PublishDateTime);
+                    
+                    int id = (int)cmd.ExecuteScalar();
+                    
+                    post.Id = id;
+
+                }
+            }
             throw new NotImplementedException();
         }
 
