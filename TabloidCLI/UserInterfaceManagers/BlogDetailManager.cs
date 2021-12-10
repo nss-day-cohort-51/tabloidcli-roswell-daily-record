@@ -9,6 +9,7 @@ namespace TabloidCLI.UserInterfaceManagers
     {
         private IUserInterfaceManager _parentUI;
         private BlogRepository _blogRepository;
+        private AuthorRepository _authorRepository;
         private PostRepository _postRepository;
         private TagRepository _tagRepository;
         private int _blogId;
@@ -74,7 +75,7 @@ namespace TabloidCLI.UserInterfaceManagers
             List<Post> posts = _postRepository.GetByAuthor(_blogId);
             foreach (Post post in posts)
             {
-                Console.WriteLine(post);
+                Console.WriteLine(post.Title);
             }
             Console.WriteLine();
         }
