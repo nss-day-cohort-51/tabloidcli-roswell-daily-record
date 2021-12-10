@@ -34,7 +34,7 @@ namespace TabloidCLI.UserInterfaceManagers
                     List();
                     return this;
                 case "2":
-                    Choose();
+                    Add();
                     return this;
                 case "3":
                     Edit();
